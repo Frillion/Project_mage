@@ -1,0 +1,2 @@
+D:\games\in_development\Project_Mage\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\games\in_development\Project_Mage\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
