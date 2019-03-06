@@ -10,6 +10,9 @@ public class PlayerBehaviour : MonoBehaviour
     public Object ice;
 
     //Private Vars
+    //health
+    float health = 200f;
+
     //Movement
     float mvX;
     float mvZ;
@@ -34,18 +37,25 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Awake()
     {
+        //Get All Components needed for the code to function
         floormask = LayerMask.GetMask("Ground");
         anim = GetComponent<Animator>();
         playerbody = GetComponent<Rigidbody>();
+        //To get the projectiles to spawn in the right location compared to the player model
         Projectileoffset = new Vector3(0.0f, 2.0f, 0.0f);
     }
 
     private void Update()
     {
+        //All variables for movement
         mvX = Input.GetAxis("Horizontal");
         mvZ = Input.GetAxis("Vertical");
         mv = new Vector3(mvX,0.0f,mvZ);
+
+        //The function for animating movement
         AnimateMove(mvX,mvZ);
+
+        //Attacks
         if (Input.GetButton("Fire1") && Time.time >= LastFire)
         {
             ShootFire();
@@ -60,12 +70,16 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+
     private void FixedUpdate()
     {
         Turning();
         playerbody.MovePosition(transform.position + mv * movementspeed * Time.deltaTime);
     }
 
+
+    //If Player Right Clicks(Fire2) then this shoud run 
+    //It Spawns a fan of iceciles
     void ShootIce()
     {
         Quaternion basespawn = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
@@ -83,6 +97,9 @@ public class PlayerBehaviour : MonoBehaviour
         Object.Instantiate(ice, transform.position + transform.forward + Projectileoffset, basespawn, transform);
     }
 
+
+    //If The Player Left Clicks(Fire1) then  this should run
+    //It Spawns a fireball
     void ShootFire()
     {
         Quaternion basespawn = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
@@ -91,6 +108,7 @@ public class PlayerBehaviour : MonoBehaviour
         Object.Instantiate(Fire, transform.position + transform.forward + Projectileoffset, basespawn, transform);
     }
 
+    //Turning the player tward the mouse
     void Turning()
     {
         Ray camray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -106,6 +124,8 @@ public class PlayerBehaviour : MonoBehaviour
             playerbody.MoveRotation(rot);
         }
     }
+
+    //Animations for Movement
     void AnimateMove(float mvX,float mvZ)
     {
         if (mvX != 0 || mvZ != 0)
@@ -117,6 +137,15 @@ public class PlayerBehaviour : MonoBehaviour
         {
             anim.SetBool("move_forward", false);
             anim.SetBool("idle_combat", true);
+        }
+    }
+
+    //If The player Is Hit
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Sword")) 
+        {
+            anim.SetTrigger("Damage_Wisard");
         }
     }
 }

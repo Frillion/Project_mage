@@ -83,11 +83,10 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        anim.SetTrigger("Damage 0");
-
         //Fire Hit
         if (other.CompareTag("Fireball"))
         {
+            anim.SetTrigger("Damage 0");
             Destroy(other.gameObject);
             health -= 40;
             if (frozen)
@@ -99,6 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
         //Ice Hit
         if (other.CompareTag("iceShard"))
         {
+            anim.SetTrigger("Damage 0");
             health -= 90;
             if (frozen == false)
             {
