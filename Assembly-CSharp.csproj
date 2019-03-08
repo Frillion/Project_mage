@@ -55,7 +55,8 @@
   <ItemGroup>
      <Compile Include="Assets\EffectExamples\Misc Effects\Scripts\SpawnEffect.cs" />
      <Compile Include="Assets\Scripts\CamBehaviour.cs" />
-     <Compile Include="Assets\Scripts\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemySpawner.cs" />
      <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
      <Compile Include="Assets\Scripts\ProjectileBehaviour.cs" />
      <Compile Include="Assets\Shared\Ramps\Runtime\RampAsset.cs" />
