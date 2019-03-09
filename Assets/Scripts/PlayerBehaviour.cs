@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    //Public Vars
+    //PUBLIC VARS
     public float movementspeed = 6f;
+
+    //Projectiles
     public Object Fire;
     public Object ice;
 
-    //Private Vars
+    //Death Vars
+    public bool isdead = false;
+
+    //PRIVATE VARS
     //health
     float health = 200f;
 
@@ -34,6 +39,7 @@ public class PlayerBehaviour : MonoBehaviour
     Vector3 mv;
     Rigidbody playerbody;
     Animator anim;
+
 
     private void Awake()
     {

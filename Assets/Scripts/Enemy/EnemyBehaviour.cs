@@ -6,10 +6,14 @@ using UnityEngine.AI;
 public class EnemyBehaviour : MonoBehaviour
 {
     //Public Vars
-    public Transform target;
+    public float spawntimer = 5f;
 
     //Private Vars
     float health = 200f;
+
+    //Script References
+    Transform player;
+    PlayerBehaviour playercontrolls;
 
     //Freeze Vars
     bool frozen = false;
@@ -19,22 +23,29 @@ public class EnemyBehaviour : MonoBehaviour
 
     //Death
     bool isdead = false;
+
     //Unity Vars
+    Transform target;
     CapsuleCollider enmcollider;
     Rigidbody body;
     NavMeshAgent pathfinder;
     Animator anim;
 
+
     private void Awake()
     {
+        player = GameObject.FindWithTag("Player").transform;
+        playercontrolls = player.GetComponent<PlayerBehaviour>();
         pathfinder = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody>();
         enmcollider = GetComponent<CapsuleCollider>();
+        spawntimer = 5f;
     }
     private void Start()
     {
         pathfinder.stoppingDistance = 3;
+        target = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
