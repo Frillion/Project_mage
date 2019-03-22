@@ -129,6 +129,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Death()
     {
+        ScoreManager.score += 10;
         anim.SetTrigger("Death");
         enmcollider.isTrigger = true;
         body.isKinematic = true;

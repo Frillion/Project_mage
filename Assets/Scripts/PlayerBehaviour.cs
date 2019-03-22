@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour
 {
     //PUBLIC VARS
+    //health
+    public float health = 200f;
+    public Slider healthbar;
+
+    //Move
     public float movementspeed = 6f;
 
     //Projectiles
@@ -15,9 +21,6 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isdead = false;
 
     //PRIVATE VARS
-    //health
-    float health = 200f;
-
     //Movement
     float mvX;
     float mvZ;
@@ -62,11 +65,11 @@ public class PlayerBehaviour : MonoBehaviour
         AnimateMove(mvX,mvZ);
 
         //Attacks
-        if (Input.GetButton("Fire1") && Time.time >= LastFire)
+        if (Input.GetButton("Fire1") && Time.time >= LastFire && !isdead)
         {
             ShootFire();
         }
-        else if (Input.GetButton("Fire2") && Time.time >= LastIce)
+        else if (Input.GetButton("Fire2") && Time.time >= LastIce && !isdead)
         {
             ShootIce();
         }
@@ -74,15 +77,34 @@ public class PlayerBehaviour : MonoBehaviour
         {
             anim.SetBool("attack_short_001", false);
         }
+        if (health <= 0f && !isdead)
+        {
+            health = 0f;
+            Death();
+        }
+        healthbar.value = health;
     }
 
 
     private void FixedUpdate()
     {
-        Turning();
-        playerbody.MovePosition(transform.position + mv * movementspeed * Time.deltaTime);
+        if (!isdead)
+        {
+            Turning();
+            playerbody.MovePosition(transform.position + mv * movementspeed * Time.deltaTime);
+        }
+        
     }
 
+
+    void Death()
+    {
+        isdead = true;
+
+        anim.SetTrigger("Dead");
+
+        movementspeed = 0f;
+    }
 
     //If Player Right Clicks(Fire2) then this shoud run 
     //It Spawns a fan of iceciles
@@ -152,6 +174,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (other.CompareTag("Sword")) 
         {
             anim.SetTrigger("Damage_Wisard");
+            health -= 45;
         }
     }
 }
