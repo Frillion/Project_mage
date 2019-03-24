@@ -8,8 +8,14 @@ public class EnemyBehaviour : MonoBehaviour
     //Public Vars
     public float spawntimer = 5f;
 
+    //Sound
+    public AudioSource enemy_dmg_audio;
+    public AudioSource enemy_death_audio;
+
     //Private Vars
     float health = 200f;
+
+    NavMeshAgent pathfinder;
 
     //Script References
     Transform player;
@@ -28,7 +34,6 @@ public class EnemyBehaviour : MonoBehaviour
     Transform target;
     CapsuleCollider enmcollider;
     Rigidbody body;
-    NavMeshAgent pathfinder;
     Animator anim;
 
 
@@ -51,6 +56,15 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playercontrolls.ispaused)
+        {
+            pathfinder.isStopped = true;
+        }
+        else
+        {
+            pathfinder.isStopped = false;
+        }
+
         float distance = Vector3.Distance(target.position, transform.position);
         pathfinder.SetDestination(target.position);
         if (distance <= pathfinder.stoppingDistance)
@@ -87,6 +101,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (health <= 0 && isdead == false)
         {
             anim.speed = 1;
+            enemy_death_audio.Play();
             Death();
         }
     }
@@ -104,6 +119,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 frozen = false;
             }
+            enemy_dmg_audio.Play();
         }
 
         //Ice Hit
@@ -115,7 +131,9 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 frozen = true;
             }
+            enemy_dmg_audio.Play();
         }
+        
     }
 
     void Face()

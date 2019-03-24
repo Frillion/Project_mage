@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Spawn()
     {
-        if (playercontrolls.isdead)
+        if (playercontrolls.isdead || playercontrolls.ispaused)
         {
             return;
         }

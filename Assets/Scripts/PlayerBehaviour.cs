@@ -10,6 +10,16 @@ public class PlayerBehaviour : MonoBehaviour
     public float health = 200f;
     public Slider healthbar;
 
+    //Audio
+    public AudioSource player_death_audio;
+
+    //Enemy Reference
+    public EnemyBehaviour enemy;
+
+    //Pause
+    public bool ispaused = false;
+    public Animator pauseanim;
+
     //Move
     public float movementspeed = 6f;
 
@@ -21,6 +31,9 @@ public class PlayerBehaviour : MonoBehaviour
     public bool isdead = false;
 
     //PRIVATE VARS
+    //Pause Var
+    int esccount = 0;
+
     //Movement
     float mvX;
     float mvZ;
@@ -64,12 +77,31 @@ public class PlayerBehaviour : MonoBehaviour
         //The function for animating movement
         AnimateMove(mvX,mvZ);
 
+        if (Input.GetKeyDown(KeyCode.Escape) && !isdead)
+        {
+            if (esccount < 1)
+            {
+                ispaused = true;
+                pauseanim.SetBool("IsPaused", true);
+                esccount += 1;
+                movementspeed = 0;
+            }
+            else
+            {
+                ispaused = false;
+                Time.timeScale = 1;
+                pauseanim.SetBool("IsPaused", false);
+                esccount = 0;
+                movementspeed = 6f;
+            }
+        }
+
         //Attacks
-        if (Input.GetButton("Fire1") && Time.time >= LastFire && !isdead)
+        else if (Input.GetButton("Fire1") && Time.time >= LastFire && !isdead && !ispaused)
         {
             ShootFire();
         }
-        else if (Input.GetButton("Fire2") && Time.time >= LastIce && !isdead)
+        else if (Input.GetButton("Fire2") && Time.time >= LastIce && !isdead && !ispaused)
         {
             ShootIce();
         }
@@ -79,6 +111,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (health <= 0f && !isdead)
         {
+            player_death_audio.Play();
             health = 0f;
             Death();
         }
